@@ -1,0 +1,23 @@
+@{
+  Layout = "_Layout";
+}
+
+@model BakeryTreat.Models.Treat;
+
+<h3>Here are some flavors for your treat! </h3>
+<hr/>
+<h4>@Html.DisplayNameFor(model => model.TreatType): @Html.DisplayFor(model => model.TreatType)</h3>
+
+@if(@Model.Flavors.Count == 0)
+{
+  <p>Sorry, no flavors! Pick somthing else @Html.ActionLink("here", "Index", "Treats") </p>
+}
+else 
+{
+  <h4>Flavors for this model.TreatType include:</h4>
+  
+  @foreach(var join in Model.Flavors)
+  {
+    <ul>@join.Flavor.FlavorType</ul>
+  }
+}
