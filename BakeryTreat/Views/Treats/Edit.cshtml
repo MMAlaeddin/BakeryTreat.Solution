@@ -1,0 +1,19 @@
+@{
+  Layout = "_Layout";
+}
+@model BakeryTreat.Models.Treat
+
+<h3>You can edit your treat: @Html.DisplayFor(model => model.TreatType)</h3>
+
+<div class="box">
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.TreatId)
+
+  @Html.HiddenFor(model => model.TreatType)
+  @Html.EditorFor(model => model.TreatType)
+
+  <input class="btn" type="submit" value="Save" />
+}
+</div>
