@@ -1,0 +1,23 @@
+@{
+  Layout = "_Layout";
+}
+
+@using BakeryTreat.Models;
+@using System.Security.Claims
+@model IEnumerable<BakeryTreat.Models.Flavor>
+
+<h2>HI @USER.Identity.Name !</h2>
+
+@if(Model.Any())
+{
+  @foreach(Flavor flavor in Model)
+  {
+    <ul>@Html.ActionLink($"{Flavor.FlavorType}", "Details", new { id = Flavor.FlavorId })</ul>
+  }
+  else
+  {
+    <h5>No flavors for you</h5>
+  }
+}
+<p>@Html.ActionLink("Add a flavor", "Create")
+<p>@Html.ActionLink("Home", "Index", "Home")

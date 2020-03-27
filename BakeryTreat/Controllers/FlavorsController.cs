@@ -11,6 +11,7 @@ using System.Security.Claims;
 
 namespace BakeryTreat.Controllers
 {
+  [Authorize]
   public class FlavorsController : Controller
   {
     private readonly BakeryTreatContext _db;
@@ -21,6 +22,12 @@ namespace BakeryTreat.Controllers
       _userManager = UserManager;
       _db = db;
     }
-    
+    public async Task<ActionResult> Index()
+    {
+      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      var currentUser = await _userManager.FindByIdAsync(userId);
+      var userFlavors = _db.Flavors.Where(entry => entry.User.Id == currentUser.Id);
+      return View(userItems);
+    }
   }
 }
