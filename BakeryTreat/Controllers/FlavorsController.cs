@@ -27,7 +27,26 @@ namespace BakeryTreat.Controllers
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(userId);
       var userFlavors = _db.Flavors.Where(entry => entry.User.Id == currentUser.Id);
-      return View(userItems);
+      return View(userFlavors);
+    }
+    public ActionResult Create()
+    {
+      ViewBag.TreatId = new SelectList(_db.Treats, "TreatId", "TreatType");
+      return View();
+    }
+    [HttpPost]
+    public ActionResult Create(Flavor flavor, int TreatId)
+    {
+      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      var currentUser = await _userManager.FindByIdAsync(userId);
+      flavor.User = currentUser;
+      _db.Flavors.Add(flavor);
+      if (CategoryId != 0)
+      {
+        _db.CategoryFlavor.Add(new CategoryFlavor() { CategoryId = CategoryId, FlavorId = flavor.FlavorId });
+      }
+      _db.SaveChanges();
+      return RedirectToAction("Index");
     }
   }
 }
