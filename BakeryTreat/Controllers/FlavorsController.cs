@@ -35,15 +35,15 @@ namespace BakeryTreat.Controllers
       return View();
     }
     [HttpPost]
-    public ActionResult Create(Flavor flavor, int TreatId)
+    public async Task<ActionResult> Create(Flavor flavor, int TreatId)
     {
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(userId);
       flavor.User = currentUser;
       _db.Flavors.Add(flavor);
-      if (CategoryId != 0)
+      if (TreatId != 0)
       {
-        _db.CategoryFlavor.Add(new CategoryFlavor() { CategoryId = CategoryId, FlavorId = flavor.FlavorId });
+        _db.TreatFlavor.Add(new TreatFlavor() { TreatId = TreatId, FlavorId = flavor.FlavorId });
       }
       _db.SaveChanges();
       return RedirectToAction("Index");
@@ -98,7 +98,7 @@ namespace BakeryTreat.Controllers
     public ActionResult DeleteConfirmed(int id)
     {
       var thisFlavor = _db.Flavors.FirstOrDefault(flavors => flavors.FlavorId == id);
-      _db.Items.Remove(thisFlavor);
+      _db.Flavors.Remove(thisFlavor);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }

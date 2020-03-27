@@ -6,12 +6,13 @@ using BakeryTreat.ViewModels;
 
 namespace BakeryTreat.Controllers
 {
-  public class AccountController : Controllers{
+  public class AccountController : Controller
+  {
     private readonly BakeryTreatContext _db;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ToDoListContext db)
+    public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, BakeryTreatContext db)
     {
       _userManager = userManager;
       _signInManager = signInManager;
@@ -43,6 +44,25 @@ namespace BakeryTreat.Controllers
     public ActionResult Login()
     {
       return View();
+    }
+    [HttpPost]
+    public async Task<ActionResult> Login(LoginViewModel model)
+    {
+      Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: true, lockoutOnFailure: false);
+      if (result.Succeeded)
+      {
+        return RedirectToAction("Index");
+      }
+      else
+      {
+        return View();
+      }
+    }
+    [HttpPost]
+    public async Task<ActionResult> LogOff()
+    {
+      await _signInManager.SignOutAsync();
+      return RedirectToAction("Index");
     }
   }
 }
