@@ -1,0 +1,9 @@
+body {
+  background-color: indigo;
+  background-image: linear-gradient(black, darkblue, rgb(2, 97, 134), turquoise, lightblue);
+  text-align: center;
+  font-family: courier;
+  color: rgb(255, 255, 240);
+  margin-top: 25px;
+  background-repeat: no-repeat;
+}
